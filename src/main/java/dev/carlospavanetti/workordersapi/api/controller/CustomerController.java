@@ -3,6 +3,8 @@ package dev.carlospavanetti.workordersapi.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,12 +41,12 @@ public class CustomerController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Customer create(@RequestBody Customer customer) {
+  public Customer create(@Valid @RequestBody Customer customer) {
     return repository.save(customer);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Customer> update(@PathVariable Long id, @RequestBody Customer customer) {
+  public ResponseEntity<Customer> update(@PathVariable Long id, @Valid @RequestBody Customer customer) {
     if (!repository.existsById(id)) {
       return ResponseEntity.notFound().build();
     }
