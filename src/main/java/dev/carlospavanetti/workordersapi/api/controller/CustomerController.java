@@ -20,12 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.carlospavanetti.workordersapi.domain.model.Customer;
 import dev.carlospavanetti.workordersapi.domain.model.CustomersRepository;
+import dev.carlospavanetti.workordersapi.service.CustomerRegisteringService;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
   @Autowired
   private CustomersRepository repository;
+
+  @Autowired
+  private CustomerRegisteringService customerRegistering;
 
   @GetMapping
   public List<Customer> list() {
@@ -42,7 +46,7 @@ public class CustomerController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Customer create(@Valid @RequestBody Customer customer) {
-    return repository.save(customer);
+    return customerRegistering.save(customer);
   }
 
   @PutMapping("/{id}")
@@ -62,7 +66,7 @@ public class CustomerController {
       return ResponseEntity.notFound().build();
     }
 
-    repository.deleteById(id);
+    customerRegistering.destroy(id);
     return ResponseEntity.noContent().build();
   }
 }
